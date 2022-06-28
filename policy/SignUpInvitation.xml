@@ -1,12 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<TrustFrameworkPolicy
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<TrustFrameworkPolicy xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-  xmlns="http://schemas.microsoft.com/online/cpim/schemas/2013/06"
-  PolicySchemaVersion="0.3.0.0"
-  TenantId="joshdemergentb2c.onmicrosoft.com"
-  PolicyId="B2C_1A_signup_invitation"
-  PublicPolicyUri="http://joshdemergentb2c.onmicrosoft.com/B2C_1A_signup_invitation">
+  xmlns="http://schemas.microsoft.com/online/cpim/schemas/2013/06" PolicySchemaVersion="0.3.0.0" TenantId="joshdemergentb2c.onmicrosoft.com" PolicyId="B2C_1A_signup_invitation" PublicPolicyUri="http://joshdemergentb2c.onmicrosoft.com/B2C_1A_signup_invitation">
 
   <BasePolicy>
     <TenantId>joshdemergentb2c.onmicrosoft.com</TenantId>
@@ -20,14 +15,14 @@
         <DataType>string</DataType>
         <UserInputType>Readonly</UserInputType>
       </ClaimType>
-    
+
       <!--Sample: Stores the error message for unsolicited request (a request without id_token_hint) and user not found-->
       <ClaimType Id="errorMessage">
-     	  <DisplayName>Error</DisplayName>
-     	  <DataType>string</DataType>
+        <DisplayName>Error</DisplayName>
+        <DataType>string</DataType>
         <UserHelpText>Add help text here</UserHelpText>
-     	  <UserInputType>Paragraph</UserInputType>
-      </ClaimType> 
+        <UserInputType>Paragraph</UserInputType>
+      </ClaimType>
     </ClaimsSchema>
 
     <ClaimsTransformations>
@@ -41,7 +36,7 @@
         </OutputClaims>
       </ClaimsTransformation>
 
-      <!--Sample: Copy the email to ReadOnlyEamil claim type-->
+      <!--Sample: Copy the email to ReadOnlyEmail claim type-->
       <ClaimsTransformation Id="CopyEmailAddress" TransformationMethod="FormatStringClaim">
         <InputClaims>
           <InputClaim ClaimTypeReferenceId="email" TransformationClaimType="inputClaim" />
@@ -54,7 +49,7 @@
         </OutputClaims>
       </ClaimsTransformation>
     </ClaimsTransformations>
-  </BuildingBlocks>  
+  </BuildingBlocks>
 
   <ClaimsProviders>
     <ClaimsProvider>
@@ -72,7 +67,7 @@
             <Item Key="EnforceEmailVerification">False</Item>
           </Metadata>
           <InputClaimsTransformations>
-            <!--Sample: Copy the email to ReadOnlyEamil claim type-->  
+            <!--Sample: Copy the email to ReadOnlyEamil claim type-->
             <InputClaimsTransformation ReferenceId="CopyEmailAddress" />
           </InputClaimsTransformations>
           <InputClaims>
@@ -99,7 +94,7 @@
           </ValidationTechnicalProfiles>
           <!-- Sample: Disable session management for sign-up page -->
           <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
-        </TechnicalProfile>      
+        </TechnicalProfile>
       </TechnicalProfiles>
     </ClaimsProvider>
 
@@ -114,10 +109,10 @@
             <Item Key="ContentDefinitionReferenceId">api.selfasserted</Item>
             <!-- Sample: Remove the continue button-->
             <Item Key="setting.showContinueButton">false</Item>
-         </Metadata>
+          </Metadata>
           <InputClaimsTransformations>
             <InputClaimsTransformation ReferenceId="CreateUnsolicitedErrorMessage" />
-          </InputClaimsTransformations>         
+          </InputClaimsTransformations>
           <InputClaims>
             <InputClaim ClaimTypeReferenceId="errorMessage"/>
           </InputClaims>
@@ -138,16 +133,16 @@
           <DisplayName> My ID Token Hint TechnicalProfile</DisplayName>
           <Protocol Name="None" />
           <Metadata>
-          
+
             <!--Sample action required: replace with your endpoint location -->
-            <Item Key="METADATA">https://your-app.azurewebsites.net/.well-known/openid-configuration</Item>
+            <Item Key="METADATA">https://app-joshd-b2c-demo-invite.azurewebsites.net/.well-known/openid-configuration</Item>
 
             <!-- <Item Key="IdTokenAudience">your_optional_audience_override</Item> -->
             <!-- <Item Key="issuer">your_optional_token_issuer_override</Item> -->
           </Metadata>
           <OutputClaims>
             <!--Sample: Read the email cliam from the id_token_hint-->
-            <OutputClaim ClaimTypeReferenceId="email" />  
+            <OutputClaim ClaimTypeReferenceId="email" />
           </OutputClaims>
         </TechnicalProfile>
       </TechnicalProfiles>
@@ -163,12 +158,12 @@
 
         <!-- Sample: Check if user tries to run the policy without invitation -->
         <OrchestrationStep Order="2" Type="ClaimsExchange">
-         <Preconditions>
+          <Preconditions>
             <Precondition Type="ClaimsExist" ExecuteActionsIf="true">
               <Value>email</Value>
               <Action>SkipThisOrchestrationStep</Action>
             </Precondition>
-          </Preconditions>        
+          </Preconditions>
           <ClaimsExchanges>
             <ClaimsExchange Id="SelfAsserted-Unsolicited" TechnicalProfileReferenceId="SelfAsserted-Unsolicited"/>
           </ClaimsExchanges>
@@ -195,11 +190,11 @@
       <DisplayName>PolicyProfile</DisplayName>
       <Protocol Name="OpenIdConnect" />
 
-	    <!--Sample: Set the input claims to be read from the id_token_hint-->
+      <!--Sample: Set the input claims to be read from the id_token_hint-->
       <InputClaims>
         <InputClaim ClaimTypeReferenceId="email" PartnerClaimType="email" />
       </InputClaims>
-	  
+
       <OutputClaims>
         <OutputClaim ClaimTypeReferenceId="displayName" />
         <OutputClaim ClaimTypeReferenceId="givenName" />

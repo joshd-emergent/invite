@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace AzureADB2C.Invite.Models
+﻿namespace AzureADB2C.Invite.Models
 {
     public class AppSettingsModel
     {
@@ -21,6 +16,5 @@ namespace AzureADB2C.Invite.Models
         public bool SMTPUseSSL { get; set; }
         public string SMTPFromAddress { get; set; }
         public string SMTPSubject { get; set; }
-        public int LinkExpiresAfterMinutes { get; set; }
     }
 }
