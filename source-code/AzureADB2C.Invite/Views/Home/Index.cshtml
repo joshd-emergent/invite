@@ -1,42 +1,96 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+	ViewData["Title"] = "Home Page";
+
+	var ExampleModel = new List<Invite> {
+		new Invite{ Name = "User Name", Email = "username@email.com" },
+		new Invite{ Name = "User Name2", Email = "username2@email.com" }
+	};
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+	<h1 class="display-6">Azure B2C Email Invite</h1>
 </div>
 
 <form method="get" asp-controller="Home">
 
-    <div class="form-horizontal">
-        <div class="form-group">
-            <label class="control-label col-md-4" for="Name">Name:</label>
-            <div class="col-md-10">
-                <input class="form-control" type="text" id="Name" name="Name" value="Western Miller" />
-                <span class="text-danger field-validation-valid" data-valmsg-for="Name" data-valmsg-replace="true"></span>
-            </div>
-        </div>
+	<div class="form-horizontal">
+		<div class="form-group">
+			<div class="col-md-10">
+				<label class="control-label" for="Name">Name:</label>
+				<input class="form-control" type="text" id="Name" name="Name" />
+				<span class="text-danger field-validation-valid" data-valmsg-for="Name" data-valmsg-replace="true"></span>
+			</div>
+		</div>
 
-        <div class="form-group">
-            <label class="control-label col-md-4" for="email">Email address:</label>
-            <div class="col-md-10">
-                <input class="form-control" type="text" id="email" name="email" value="" required />
-                <span class="text-danger field-validation-valid" data-valmsg-for="email" data-valmsg-replace="true"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-md-4" for="phone">Phone number, with country prefix (optional):</label>
-            <div class="col-md-10">
-                <input class="form-control" type="text" id="phone" name="phone" value="" />
-                <span class="text-danger field-validation-valid" data-valmsg-for="phone" data-valmsg-replace="true"></span>
-            </div>
-        </div>
+		<div class="form-group">
+			<div class="col-md-10">
+				<label class="control-label" for="email">Email address:</label>
+				<input class="form-control" type="text" id="email" name="email" value="" required />
+				<span class="text-danger field-validation-valid" data-valmsg-for="email" data-valmsg-replace="true"></span>
+			</div>
+		</div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Send invite" class="btn btn-primary" />
-            </div>
-        </div>
-    </div>
+		<div class="form-group">
+			<div class="col-md-offset-2 col-md-10">
+				<input type="submit" value="Send invite" class="btn btn-primary" />
+			</div>
+		</div>
+		<div>
+			@ViewData["Message"]
+		</div>
+	</div>
 </form>
+
+<div class="text-center">
+	<h1 class="display-6">Azure B2C Email Invite Bulk Upload</h1>
+</div>
+<form asp-controller="Home" asp-action="Index" method="post" enctype="multipart/form-data">
+	<div class="form-group">
+		<div class="col-md-10">
+			<label class="control-label" for="File">Csv File Upload:</label>
+			<input class="form-control" type="file" name="postedFile" />
+			<span class="text-danger field-validation-valid" data-valmsg-for="File" data-valmsg-replace="true"></span>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-md-offset-2 col-md-10">
+			<input type="submit" value="Send invites" class="btn btn-primary" />
+		</div>
+	</div>
+</form>
+@if (Model != null)
+{
+	<hr />
+	<table class="table">
+		<tr>
+			<th>Name</th>
+			<th>Email</th>
+			<th>Message</th>
+		</tr>
+		@foreach (Invite inv in Model)
+		{
+			<tr>
+				<td>@inv.Name</td>
+				<td>@inv.Email</td>
+				<td>@inv.Message</td>
+			</tr>
+		}
+	</table>
+
+}
+
+<hr />
+<h2 class="display-7">Example CSV</h2>
+<table class="table">
+	<tr>
+		<th>Name</th>
+		<th>Email</th>
+	</tr>
+	@foreach (Invite inv in ExampleModel)
+	{
+		<tr>
+			<td>@inv.Name</td>
+			<td>@inv.Email</td>
+		</tr>
+	}
+</table>
