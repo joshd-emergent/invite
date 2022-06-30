@@ -14,8 +14,6 @@ using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.Mail;
 using System.Security.Cryptography.X509Certificates;
 
 namespace AzureADB2C.Invite.Controllers
@@ -95,7 +93,7 @@ namespace AzureADB2C.Invite.Controllers
 			return View();
 		}
 
-		private string SendEmail(string Name, string email, string phone)
+		private string SendEmail(string name, string email, string phone)
 		{
 
 			if (string.IsNullOrEmpty(email))
@@ -105,7 +103,7 @@ namespace AzureADB2C.Invite.Controllers
 
 			try
 			{
-				string token = BuildIdToken(Name, email, phone);
+				string token = BuildIdToken(name, email, phone);
 				string link = BuildUrl(token);
 
 				string Body = string.Empty;
@@ -113,19 +111,20 @@ namespace AzureADB2C.Invite.Controllers
 				string htmlTemplate = System.IO.File.ReadAllText(Path.Combine(this.HostingEnvironment.ContentRootPath, "App_Data\\Template.html"));
 
 
-				MailMessage mailMessage = new MailMessage();
-				mailMessage.To.Add(email);
-				mailMessage.From = new MailAddress(AppSettings.SMTPFromAddress);
-				mailMessage.Subject = AppSettings.SMTPSubject;
-				mailMessage.Body = string.Format(htmlTemplate, email, link);
-				mailMessage.IsBodyHtml = true;
-				SmtpClient smtpClient = new SmtpClient(AppSettings.SMTPServer, AppSettings.SMTPPort);
-				smtpClient.Credentials = new NetworkCredential(AppSettings.SMTPUsername, AppSettings.SMTPPassword);
-				smtpClient.EnableSsl = AppSettings.SMTPUseSSL;
-				smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
-				smtpClient.Send(mailMessage);
 
-				return $"Email sent to {email}";
+				//MailMessage mailMessage = new MailMessage();
+				//mailMessage.To.Add(email);
+				//mailMessage.From = new MailAddress(AppSettings.SMTPFromAddress);
+				//mailMessage.Subject = AppSettings.SMTPSubject;
+				//mailMessage.Body = string.Format(htmlTemplate, email, link);
+				//mailMessage.IsBodyHtml = true;
+				//SmtpClient smtpClient = new SmtpClient(AppSettings.SMTPServer, AppSettings.SMTPPort);
+				//smtpClient.Credentials = new NetworkCredential(AppSettings.SMTPUsername, AppSettings.SMTPPassword);
+				//smtpClient.EnableSsl = AppSettings.SMTPUseSSL;
+				//smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+				//smtpClient.Send(mailMessage);
+
+				return $"Email sent to {email} {link}";
 
 			}
 			catch (Exception ex)
@@ -135,13 +134,14 @@ namespace AzureADB2C.Invite.Controllers
 		}
 
 
-		private string BuildIdToken(string Name, string email, string phone)
+		private string BuildIdToken(string name, string email, string phone)
 		{
 			string issuer = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase.Value}/";
 
 			// All parameters send to Azure AD B2C needs to be sent as claims
 			IList<System.Security.Claims.Claim> claims = new List<System.Security.Claims.Claim>();
-			claims.Add(new System.Security.Claims.Claim("name", Name, System.Security.Claims.ClaimValueTypes.String, issuer));
+			claims.Add(new System.Security.Claims.Claim("name", name, System.Security.Claims.ClaimValueTypes.String, issuer));
+			claims.Add(new System.Security.Claims.Claim("displayName", name, System.Security.Claims.ClaimValueTypes.String, issuer));
 			claims.Add(new System.Security.Claims.Claim("email", email, System.Security.Claims.ClaimValueTypes.String, issuer));
 
 			if (!string.IsNullOrEmpty(phone))

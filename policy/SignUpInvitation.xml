@@ -73,6 +73,7 @@
           <InputClaims>
             <!--Sample: Set input the ReadOnlyEmail claim type to prefilled the email address-->
             <InputClaim ClaimTypeReferenceId="ReadOnlyEmail" />
+            <InputClaim ClaimTypeReferenceId="displayName" />
           </InputClaims>
           <OutputClaims>
             <OutputClaim ClaimTypeReferenceId="objectId" />
@@ -141,8 +142,9 @@
             <!-- <Item Key="issuer">your_optional_token_issuer_override</Item> -->
           </Metadata>
           <OutputClaims>
-            <!--Sample: Read the email cliam from the id_token_hint-->
+            <!--Sample: Read the email claim from the id_token_hint-->
             <OutputClaim ClaimTypeReferenceId="email" />
+            <OutputClaim ClaimTypeReferenceId="displayName" />
           </OutputClaims>
         </TechnicalProfile>
       </TechnicalProfiles>
@@ -193,6 +195,7 @@
       <!--Sample: Set the input claims to be read from the id_token_hint-->
       <InputClaims>
         <InputClaim ClaimTypeReferenceId="email" PartnerClaimType="email" />
+        <InputClaim ClaimTypeReferenceId="displayName" PartnerClaimType="displayName" />
       </InputClaims>
 
       <OutputClaims>

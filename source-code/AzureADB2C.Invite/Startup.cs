@@ -32,7 +32,6 @@ namespace AzureADB2C.Invite
 			services.Configure<AppSettingsModel>(Configuration.GetSection("AppSettings"));
 
 
-			var initialScopes = Configuration.GetValue<string>("DownstreamApi:Scopes")?.Split(' ');
 
 			services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
 				.AddMicrosoftIdentityWebApp(Configuration.GetSection("AzureAd"));
