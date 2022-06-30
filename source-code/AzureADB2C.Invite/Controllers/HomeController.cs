@@ -1,5 +1,6 @@
 ﻿using AzureADB2C.Invite.Models;
 using CsvHelper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -56,6 +57,7 @@ namespace AzureADB2C.Invite.Controllers
 			});
 		}
 
+		[Authorize]
 		[HttpPost]
 		public IActionResult Index(IFormFile postedFile)
 		{
@@ -84,6 +86,7 @@ namespace AzureADB2C.Invite.Controllers
 			return View();
 		}
 
+		[Authorize]
 		[HttpGet]
 		public ActionResult Index(string Name, string email, string phone)
 		{
